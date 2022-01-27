@@ -49,7 +49,7 @@ export const GameForm = () => {
 
         // Send POST request to your API
         createGame(game)
-            .then(() => history.push("/games"))
+            .then(() => history.push("/"))
     }
 
 
