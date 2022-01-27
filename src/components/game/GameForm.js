@@ -13,11 +13,11 @@ export const GameForm = () => {
         provide some default values.
     */
     const [currentGame, setCurrentGame] = useState({
-        skillLevel: 1,
+        skillLevel: "",
         numberOfPlayers: 0,
-        title: "",
+        name: "",
         maker: "",
-        gameTypeId: 0
+        gameTypeId: 1
     })
 
     /*
@@ -85,7 +85,7 @@ export const GameForm = () => {
             </fieldset>
             <fieldset>
                 <div className="form-group">
-                    <label htmlFor="skillLevel">Number of Players: </label>
+                    <label htmlFor="skillLevel">Skill Level: </label>
                     <input type="text" name="skillLevel" required autoFocus className="form-control"
                         value={currentGame.skillLevel}
                         onChange={changeGameState}
@@ -94,13 +94,12 @@ export const GameForm = () => {
             </fieldset>
             <fieldset>
                 <div className="form-group">
-                    <label htmlFor="numberOfPlayers">Game Type: </label>
-                    <select type="text" name="numberOfPlayers" required autoFocus className="form-control"
-                        value={currentGame.numberOfPlayers}
+                    <label htmlFor="gameTypeId">Game Type: </label>
+                    <select type="text" name="gameTypeId" required autoFocus className="form-control"
                         onChange={changeGameState}>
                             {
                                 gameTypes.map(gameType => 
-                                <option value={gameType.id} >
+                                <option value={gameType.id} key= {gameType.id}>
                                     {gameType.label}
                                 </option>)
                             }
