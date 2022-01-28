@@ -49,7 +49,6 @@ export const GameProvider = (props) => {
          })
             .then(() => {
                 setEditId(0)
-                setGames()
             })
         }
     

@@ -55,7 +55,7 @@ export const GameForm = () => {
             skillLevel: currentGame.skillLevel,
             gametypeId: parseInt(currentGame.gameTypeId)
         }
-        if (editGameId.id === 0) {
+        if (editGameId === 0) {
             createGame(game)
             .then(() => history.push("/games"))
         } else {
@@ -124,7 +124,7 @@ export const GameForm = () => {
             </fieldset>
             
 
-            {currentGame.id === 0
+            {editGameId === 0
                                 ? <button className="btn btn-3"
                                     onClick={submitGame}
                                     >Save New Game</button>
