@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom'
 
 export const GameForm = () => {
     const history = useHistory()
-    const { createGame, getGameTypes, gameTypes } = useContext(GameContext)
+    const { createGame, getGameTypes, gameTypes, getOneGame, editGameId, updateGame, setEditId } = useContext(GameContext)
 
     /*
         Since the input fields are bound to the values of
@@ -14,7 +14,7 @@ export const GameForm = () => {
     */
     const [currentGame, setCurrentGame] = useState({
         skillLevel: "",
-        numberOfPlayers: 0,
+        numberOfPlayers: "0",
         name: "",
         maker: "",
         gameTypeId: 1
@@ -26,6 +26,15 @@ export const GameForm = () => {
     */
     useEffect(() => {
         getGameTypes()
+        if (editGameId != 0) {
+            getOneGame(editGameId).then(game => setCurrentGame({
+                skillLevel : game.skill_level,
+                numberOfPlayers: game.number_of_players,
+                maker: game.maker,
+                gameTypeId: game.gametype.id,
+                name: game.name
+            }))
+        }
     }, [])
 
 
@@ -46,16 +55,23 @@ export const GameForm = () => {
             skillLevel: currentGame.skillLevel,
             gametypeId: parseInt(currentGame.gameTypeId)
         }
-
+        if (editGameId.id === 0) {
+            createGame(game)
+            .then(() => history.push("/games"))
+        } else {
+            updateGame(game)
+            .then(() => history.push("/games"))
+        }
         // Send POST request to your API
-        createGame(game)
-            .then(() => history.push("/"))
+        
     }
 
 
     return (
         <form className="gameForm">
-            <h2 className="gameForm__title">Register New Game</h2>
+            <h2 className="gameForm__title">{currentGame.id === 0
+                                ? "Register New"
+                                : "Edit"} Game</h2>
             <fieldset>
                 <div className="form-group">
                     <label htmlFor="name">Name: </label>
@@ -96,7 +112,7 @@ export const GameForm = () => {
                 <div className="form-group">
                     <label htmlFor="gameTypeId">Game Type: </label>
                     <select type="text" name="gameTypeId" required autoFocus className="form-control"
-                        onChange={changeGameState}>
+                        onChange={changeGameState} value={currentGame.gameTypeId}>
                             {
                                 gameTypes.map(gameType => 
                                 <option value={gameType.id} key= {gameType.id}>
@@ -108,11 +124,13 @@ export const GameForm = () => {
             </fieldset>
             
 
-            {/* You create the rest of the input fields for each game property */}
-
-            <button type="submit"
-                onClick={submitGame}
-                className="btn btn-primary">Create</button>
+            {currentGame.id === 0
+                                ? <button className="btn btn-3"
+                                    onClick={submitGame}
+                                    >Save New Game</button>
+                                : <button className="btn btn-2"
+                                    onClick={submitGame}
+                                    >Edit Game</button>}
         </form>
     )
 }
